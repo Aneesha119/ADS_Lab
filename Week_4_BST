@@ -1,0 +1,195 @@
+//binary search tree
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+struct Node* root = NULL, *temp;
+
+void insert(int x){
+    struct Node* p = root, *p1;
+    temp = (struct Node*) malloc (sizeof(struct Node));
+    temp -> data = x;
+    temp -> left = NULL;
+    temp -> right = NULL;
+    if(root == NULL){
+        root = temp;
+        return;
+    }
+    while(p != NULL){
+        p1 = p;
+        if(x < p -> data){
+            p = p -> left;
+        } else{
+            p = p -> right;
+        }
+    }
+    if(x < p1 -> data){
+        p1 -> left = temp;
+    } else{
+        p1 -> right = temp;
+    }
+}
+
+void inorder(struct Node* temp){
+    if(temp != NULL){
+        inorder(temp -> left);
+        printf("Node value: %d\t", temp -> data);
+        inorder(temp -> right);
+    }
+}
+
+void preorder(struct Node* temp){
+    if(temp != NULL){
+        printf("Node value: %d\t", temp -> data);
+        preorder(temp -> left);
+        preorder(temp -> right);
+    }
+}
+
+void postorder(struct Node* temp){
+    if(temp != NULL){
+        postorder(temp -> left);
+        postorder(temp -> right);
+        printf("Node value: %d\t", temp -> data);
+    }
+}
+
+void search(int x){
+    temp = root;
+    if (root == NULL){
+        printf("No tree");
+        return;
+    }
+    while(temp != NULL){
+        if(x == temp -> data){
+            printf("%d found", x);
+            return;
+        } else if (x > temp -> data){
+            temp = temp -> right;
+        } else{
+            temp = temp -> left;
+        }
+    }
+    printf("%d not in tree", x);
+}
+
+void del(int x){
+    struct Node* p = root, *p1 = p;
+    int c = 0;
+    if(root -> left == NULL && root -> right == NULL){
+        temp = root;
+        root = NULL;
+        free(root);
+        return;
+    }
+    while(p != NULL){
+        if(p -> data == x){
+            c = 1;
+            temp = p;
+            break;
+        }
+        if (p -> data > x){
+            p1 = p;
+            p = p -> left;
+        } else {
+            p1 = p;
+            p = p -> right;
+        }
+    }
+    if (c){
+        if(p -> left == NULL && p-> right == NULL){
+            printf("deleted element: %d", p -> data);
+            if(p1 -> data > x){
+                p1 -> left = NULL;
+            } else{
+                p1 -> right = NULL;
+            }
+            free(temp);
+            return;
+        } else if(p -> left == NULL || p -> right == NULL){
+            printf("deleted element: %d", p -> data);
+            if(p1 -> data > p -> data){
+                if(p -> left != NULL){
+                    p1 -> left = p -> left;
+                } else{
+                    p1 -> left = p -> right;
+                }
+            } else{
+                if(p -> data != NULL){
+                    p1 -> right = p -> left;
+                } else{
+                    p1 -> right = p -> right;
+                }
+            }
+            free(temp);
+            return;
+        } else{
+            p1 = p->right;
+        if (p1->left == NULL) {
+            p->data = p1->data;
+            p->right = p1->right;
+            free(p1);
+        } else {
+            struct Node *p2 = p1;
+            while (p1->left != NULL) {
+                p2 = p1;
+                p1 = p1->left;
+            }
+            p->data = p1->data;
+            p2->left = p1->right;
+            free(p1);
+        }
+        }
+    } else {
+        printf("deleted element: %d", p -> data);
+
+    }
+}
+
+int main(){
+    int choice, c = 1, x;
+    while(c){
+        printf("Operations offered:\n1. Insert\n2. Preorder Traversal\n3. Inorder Traversal\n4. Postorder Traversal\n5. Search\n6. Deletion\n\nEnter choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter element to be inserted: ");
+                scanf("%d", &x);
+                insert(x);
+                break;
+            case 2:
+                temp = root;
+                preorder(temp);
+                break;
+            case 3:
+                temp = root;
+                inorder(temp);
+                break;
+            case 4:
+                temp = root;
+                postorder(temp);
+                break;
+            case 5:
+                printf("Enter element to be searched: ");
+                scanf("%d", &x);
+                search(x);
+                break;
+            case 6:
+                printf("Enter element to be deleted: ");
+                scanf("%d", &x);
+                del(x);
+                break;
+            default:
+                printf("Invalid choice");
+                break;
+        }
+        printf("\nif you wish to continue, enter 1, else enter 0: ");
+        scanf("%d", &c);
+    }
+}
+
