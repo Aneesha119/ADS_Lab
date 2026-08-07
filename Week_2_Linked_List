@@ -1,0 +1,215 @@
+
+//singly linked list
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* link;
+};
+
+struct Node* head = NULL, *temp;
+
+void insertAtBeg(int x){
+    temp = (struct Node*) malloc(sizeof(struct Node));
+    temp -> data = x;
+    temp -> link = head;
+    head = temp;
+}
+
+void insertAtEnd(int x){
+    if(head == NULL){
+        printf("Linked list is empty\n");
+        return;
+    }
+    struct Node* t = head;
+    while(t -> link != NULL){
+        t = t -> link;
+    }
+    temp = (struct Node*) malloc(sizeof(struct Node));
+    temp -> data = x;
+    temp -> link = NULL;
+    t -> link = temp;
+}
+
+void insertAtPos(int x, int pos){
+    if(head == NULL){
+        printf("Linked list is empty\n");
+        return;
+    }
+    struct Node* t = head;
+    for(int i = 1; i < pos - 1; i++){
+        if(t == NULL){
+            printf("Position out of bounds\n");
+            return;
+        }
+        t = t -> link;
+    }
+    temp = (struct Node*) malloc(sizeof(struct Node));
+    temp -> data = x;
+    temp -> link = t -> link;
+    t -> link = temp;
+}
+
+void delAtBeg(){
+    if(head == NULL){
+        printf("Linked list is empty\n");
+        return;
+    }
+    temp = head;
+    head = head -> link;
+    free(temp);
+}
+
+void delAtEnd(){
+    if(head == NULL){
+        printf("Linked list is empty\n");
+        return;
+    }
+    struct Node* t = head;
+    while(t -> link -> link != NULL){
+        t = t -> link;
+    }
+    temp = t -> link;
+    t -> link = NULL;
+    free(temp);
+}
+
+void delAtPos(int pos){
+    if(head == NULL){
+        printf("Linked list is empty\n");
+        return;
+    }
+    struct Node* t = head;
+    for(int i = 1; i < pos; i++){
+        if(t == NULL){
+            printf("Position out of bounds\n");
+            return;
+        }
+        t = t -> link;
+    }
+    temp = t -> link;
+    t -> link = temp -> link;
+    free(temp);
+}
+
+void search(int x){
+    temp = head;
+    int c = 1;
+    while(temp != NULL){
+        if(temp -> data == x){
+            printf("%d at %d node\n", x, c);
+            return;
+        }
+        temp = temp -> link;
+        c++;
+    }
+    printf("%d not in linked list\n", x);
+}
+
+//alt elements
+void alt(){
+    if(head == NULL){
+        printf("Linked list is empty!");
+        return;
+    }
+    int c = 0;
+    struct Node* t = head;
+    while(t != NULL){
+        c++;
+        if(c%2 == 0){
+            t = t -> link;
+            continue;
+        }
+        printf("%d ", t -> data);
+        t = t -> link;
+    }
+}
+
+//sum of all even numbers in list
+void evesum(){
+    if(head == NULL){
+        printf("Linked list is empty!");
+        return;
+    }
+    int s = 0;
+    struct Node* t = head;
+    while(t != NULL){
+        if((t -> data)%2 == 0){
+            s += t-> data;
+        }
+        t = t -> link;
+    }
+    printf("Sum of all even elements: %d", s);
+}
+
+void disp(){
+    if(head == NULL){
+        printf("Linked list is empty!");
+        return;
+    }
+    temp = head;
+    int c = 1;
+    while(temp != NULL){
+        printf("%d node: %d\n", c, temp -> data);
+        temp = temp -> link;
+        c++;
+    }
+}
+
+int main(){
+    int choice, c = 1, el, pos;
+    while(c){
+        printf("Operations offered:\n1. Insert at Beginning\n2. Insert at End\n3. Insert at Position\n4. Delete from Beginning\n5. Delete from End\n6. Delete from Position\n7. Search\n8. Display\n\nEnter choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter element to be inserted: ");
+                scanf("%d", &el);
+                insertAtBeg(el);
+                break;
+            case 2:
+                printf("Enter element to be inserted: ");
+                scanf("%d", &el);
+                insertAtEnd(el);
+                break;
+            case 3:
+                printf("Enter position: ");
+                scanf("%d", &pos);
+                printf("Enter element to be inserted: ");
+                scanf("%d", &el);
+                insertAtPos(el, pos);
+                break;
+            case 4:
+                delAtBeg();
+                break;
+            case 5:
+                delAtEnd();
+                break;
+            case 6:
+                printf("Enter position: ");
+                scanf("%d", &pos);
+                delAtPos(pos);
+                break;
+            case 7:
+                printf("Element to be searched: ");
+                scanf("%d", &el);
+                search(el);
+                break;
+            case 8:
+                disp();
+                break;
+            case 9:
+                alt();
+                break;
+            case 10:
+                evesum();
+                break;
+            default:
+                printf("Invalid choice\n");
+                break;
+        }
+        printf("\nif you wish to continue, enter 1, else enter 0: ");
+        scanf("%d", &c);
+    }
+}
