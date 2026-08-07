@@ -1,0 +1,254 @@
+//stack static
+#include <stdio.h>
+
+struct stack{
+    int top;
+    int array[20];
+}s;
+
+int n;
+
+void push(int x){
+    if(s.top == n-1){
+        printf("Stack overflow");
+        return;
+    }
+    s.array[++s.top] = x;
+}
+
+void pop(){
+    if(s.top == -1){
+        printf("Stack underflow");
+        return;
+    }
+    printf("Popped element: %d", s.array[s.top--]);
+}
+
+void peek(){
+    printf("Top: %d", s.array[s.top]);
+}
+
+int main(){
+    s.top = -1;
+    int choice, c = 1, x;
+    printf("Enter size of stack: ");
+    scanf("%d", &n);
+    while(c){
+        printf("Operations offered:\n1. Push\n2. Pop\n3. Peek\n\nEnter choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter element to be inserted: ");
+                scanf("%d", &x);
+                push(x);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                peek();
+                break;
+            default:
+                printf("Invalid choice");
+                break;
+        }
+        printf("\nif you wish to continue, enter 1, else enter 0: ");
+        scanf("%d", &c);
+    }
+}
+
+
+//stack dynamic
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* link;
+};
+
+struct Node* top = NULL, *temp;
+
+void push(int x){
+    temp = (struct Node*) malloc (sizeof(struct Node));
+    temp -> data = x;
+    temp -> link = top;
+    top = temp;
+}
+
+void pop(){
+    if(top == NULL){
+        printf("stack underflow");
+        return;
+    }
+    temp = top;
+    top = top -> link;
+    free(top);
+}
+
+void display(){
+    temp = top;
+    while(temp != NULL){
+        printf("data: %d\t", temp -> data);
+        temp = temp -> link;
+    }
+}
+
+int main(){
+    int choice, c = 1, x;
+    while(c){
+        printf("Operations offered:\n1. Push\n2. Pop\n3. Display\n\nEnter choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter element to be inserted: ");
+                scanf("%d", &x);
+                push(x);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                display();
+                break;
+            default:
+                printf("Invalid choice");
+                break;
+        }
+        printf("\nif you wish to continue, enter 1, else enter 0: ");
+        scanf("%d", &c);
+    }
+}
+
+//queue static
+#include <stdio.h>
+
+struct queue{
+    int f;
+    int r;
+    int array[10];
+}q;
+
+int n;
+
+void enqueue(int x){
+    if(q.r == n-1){
+        printf("Queue overflow");
+        return;
+    }
+    q.array[++q.r] = x;
+}
+
+void dequeue(){
+    if(q.f > q.r){
+        printf("Queue underflow");
+        return;
+    }
+    printf("Dequeued element: %d", q.array[q.f++]);
+}
+
+void disp(){
+    for(int i = q.f; i <= q.r; i++){
+        printf("elem: %d\t",q.array[i]);
+    }
+}
+
+int main(){
+    q.f = 0;
+    q.r = -1;
+    int choice, c = 1, x;
+    printf("Enter size of queue: ");
+    scanf("%d", &n);
+    while(c){
+        printf("Operations offered:\n1. Enqueue\n2. Dequeue\n3. Display\n\nEnter choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter element to be inserted: ");
+                scanf("%d", &x);
+                enqueue(x);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                disp();
+                break;
+            default:
+                printf("Invalid choice");
+                break;
+        }
+        printf("\nif you wish to continue, enter 1, else enter 0: ");
+        scanf("%d", &c);
+    }
+}
+
+
+//queue dynamic
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* link;
+};
+
+struct Node *front = NULL, *rear = NULL, *temp;
+
+void enqueue(int x){
+    temp = (struct Node*) malloc (sizeof(struct Node));
+    temp -> data = x;
+    temp -> link = NULL;
+    if(front == NULL && rear == NULL){
+        front = temp;
+        rear = temp;
+        return;
+    }
+    rear -> link = temp;
+    rear = temp;
+}
+
+void dequeue(){
+    if(front == NULL && rear == NULL){
+        printf("queue underflow");
+        return;
+    }
+    temp = front;
+    printf("dequeued element: %d", front -> data);
+    front = front -> link;
+    free(temp);
+}
+
+void disp(){
+    temp = front;
+    while(temp != NULL){
+        printf("data: %d\t", temp -> data);
+        temp = temp -> link;
+    }
+}
+
+int main(){
+    int choice, c = 1, x;
+    while(c){
+        printf("Operations offered:\n1. Enqueue\n2. Dequeue\n3. Display\n\nEnter choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter element to be inserted: ");
+                scanf("%d", &x);
+                enqueue(x);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                disp();
+                break;
+            default:
+                printf("Invalid choice");
+                break;
+        }
+        printf("\nif you wish to continue, enter 1, else enter 0: ");
+        scanf("%d", &c);
+    }
+}
