@@ -1,0 +1,137 @@
+//graph (bfs and dfs)
+#include <stdio.h>
+
+#define MAX 10
+
+int visited[MAX], stack[MAX], queue[MAX];
+int top = -1, front = 0, rear = -1;
+
+// Queue functions
+void enqueue(int x) {
+    queue[++rear] = x;
+}
+
+int dequeue() {
+    int x = queue[front];
+    front++;
+    return x;
+}
+
+// Stack functions
+void push(int x) {
+    stack[++top] = x;
+}
+
+int pop() {
+    return stack[top--];
+}
+
+// BFS
+void bfs(int graph[][MAX], int n, int start) {
+    int i, node;
+
+    if (n == 0) {
+        printf("Invalid graph\n");
+        return;
+    }
+
+    front = 0;
+    rear = -1;
+
+    enqueue(start);
+    visited[start] = 1;
+
+    printf("BFS: ");
+
+    while (front <= rear) {
+        node = dequeue();
+        printf("%d ", node);
+
+        for (i = 0; i < n; i++) {
+            if (graph[node][i] == 1 && visited[i] == 0) {
+                enqueue(i);
+                visited[i] = 1;
+            }
+        }
+    }
+
+    printf("\n");
+
+}
+
+// DFS
+void dfs(int graph[][MAX], int n, int start) {
+    int i, node;
+
+    if (n == 0) {
+        printf("Invalid graph\n");
+        return;
+    }
+
+    top = -1;
+
+    push(start);
+
+    printf("DFS: ");
+
+    while (top != -1) {
+        node = pop();
+
+        if (visited[node] == 0) {
+            printf("%d ", node);
+            visited[node] = 1;
+
+            for (i = n - 1; i >= 0; i--) {
+                if (graph[node][i] == 1 && visited[i] == 0) {
+                    push(i);
+                }
+            }
+        }
+    }
+
+    printf("\n");
+
+}
+
+int main() {
+    int graph[MAX][MAX], n, start;
+
+    printf("Enter number of vertices: ");
+    scanf("%d", &n);
+
+    if (n <= 0 || n > MAX) {
+        printf("Invalid number of vertices\n");
+        return 0;
+    }
+
+    printf("Enter adjacency matrix:\n");
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    printf("Enter start vertex: ");
+    scanf("%d", &start);
+
+    if (start < 0 || start >= n) {
+        printf("Invalid start vertex\n");
+        return 0;
+    }
+
+    for (int i = 0; i < n; i++) {
+        visited[i] = 0;
+    }
+
+    bfs(graph, n, start);
+
+    for (int i = 0; i < n; i++) {
+        visited[i] = 0;
+    }
+
+    dfs(graph, n, start);
+
+    return 0;
+
+}
