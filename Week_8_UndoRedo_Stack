@@ -1,0 +1,65 @@
+//undo redo
+
+#include <stdio.h>
+
+int utop = -1, rtop = -1, undos[10], redos[10]; 
+
+void push(int x){
+    if(utop == 9){
+        printf("Stack overflow");
+        return;
+    }
+    undos[++utop] = x;
+    rtop = -1;
+}
+
+void undo(){
+    if(utop == -1){
+        printf("Stack underflow");
+        return;
+    }
+    redos[++rtop] = undos[utop--];
+}
+
+void redo(){
+    if(rtop == -1){
+        printf("Stack underflow");
+        return;
+    }
+    undos[++utop] = redos[rtop--];
+}
+
+void display(){
+    for(int i = 0; i <= utop; i++){
+        printf("%d\t", undos[i]);
+    }
+}
+
+int main(){
+    int c = 1, choice, elem;
+    while(c){
+        printf("Operations offered:\n1. push\n2. undo\n3. redo\n4. display\nenter choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("enter element: ");
+                scanf("%d", &elem);
+                push(elem);
+                break;
+            case 2:
+                undo();
+                break;
+            case 3:
+                redo();
+                break;
+            case 4:
+                display();
+                break;
+            default:
+                printf("Wrong choice!");
+                break;
+        }
+        printf("Enter 1 if you wish to continue, else enter 0: ");
+        scanf("%d", &c);
+    }
+}
