@@ -1,0 +1,68 @@
+// circular queue
+#include <stdio.h>
+
+int qu[8], f = -1, r = -1;
+
+void enqueue(int x){
+    if((r + 1)%8 == f){
+        printf("Queue overflow");
+        return;
+    }
+    if(f == -1){
+        f++;
+    }
+    r = (r + 1)%8;
+    qu[r] = x;
+}
+
+void dequeue(){
+    if(f == -1){
+        printf("Queue underflow");
+        return;
+    }
+    printf("deleted element: %d", qu[f]);
+    if(f == r){
+        f = -1; r = -1;
+    } else{
+        f = (f + 1)%8;
+    }
+}
+
+void display(){
+    int i = f;
+    while(i != r){
+        if(i == f){
+            printf("f");
+        }
+        printf("%d\t", qu[i]);
+        i = (i + 1)%8;
+    }
+    printf("r%d", qu[i]);
+}
+
+int main(){
+    int choice, c = 1, elem;
+    while(1){
+        printf("\nOperations available:\n1. enqueue\n2. dequeue\n3. display\n4. exit\nenter choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter element: ");
+                scanf("%d", &elem);
+                enqueue(elem);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                return 0;
+                break;
+            default:
+                printf("Wrong choice!");
+                break;
+        }
+    }
+}
