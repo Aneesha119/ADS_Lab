@@ -1,0 +1,82 @@
+//double ended stack
+
+#include <stdio.h>
+
+int top1 = -1, top2 = 20;
+int stck[20];
+
+void push_right(int x){
+    if(top1 == top2 - 1){  
+        printf("Stack overflow");
+        return;
+    }
+    stck[++top1] = x; 
+}
+
+void push_left(int x){
+    if(top1 == top2 - 1){
+        printf("Stack overflow");
+        return;
+    }
+    stck[--top2] = x; 
+}
+
+void pop_right(){
+    if(top1 == -1){
+        printf("Stack underflow");
+        return;
+    }
+    printf("Popped element: %d", stck[top1--]);
+}
+
+void pop_left(){
+    if(top2 == 20){
+        printf("Stack underflow");
+        return;
+    }
+    printf("Popped element: %d", stck[top2++]);
+}
+
+void display(){
+    printf("Stack operations:\n");
+    for(int i = 0; i <= top1; i++){
+        printf("%d\t", stck[i]);
+    }
+    for(int j = top2; j <= 19; j++){
+        printf("%d\t", stck[j]);
+    }
+}
+
+int main(){
+    int c = 1, choice, elem;
+    while(c){
+        printf("Operations offered:\n1. push right\n2. push left\n3. pop right\n4. pop left\n5. display\nEnter choice: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1:
+                printf("Enter element: ");
+                scanf("%d", &elem);
+                push_right(elem);
+                break;
+            case 2:
+                printf("Enter element: ");
+                scanf("%d", &elem);
+                push_left(elem);
+                break;
+            case 3:
+                pop_right();
+                break;
+            case 4:
+                pop_left();
+                break;
+            case 5:
+                display();
+                break;
+            default:
+                printf("Wrong choice!");
+                break;
+        }
+        printf("\nIf you wish to continue, enter 1 else enter 0: ");
+        scanf("%d", &c);
+    }
+}
